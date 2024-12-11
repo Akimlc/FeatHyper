@@ -1,3 +1,8 @@
+import java.io.BufferedReader
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.TimeZone
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -20,8 +25,8 @@ android {
         }
     }
 
-    signingConfigs{
-        create("hyperos"){
+    signingConfigs {
+        create("hyperos") {
             storeFile = file("../sign/featHyper")
             storePassword = "hyperos"
             keyAlias = "hyperos"
@@ -37,9 +42,19 @@ android {
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs["hyperos"]
+            applicationVariants.all {
+                outputs.all {
+                    if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
+                        this.outputFileName =
+                            "FeatHyper_v${versionName}_${getCommitID()}_${releaseTime()}.apk"
+                    }
+                }
+            }
+            manifestPlaceholders["git_info"] = getBranch() + "_" + getCommitID() + "_" + getUserName()
         }
         debug {
             signingConfig = signingConfigs["hyperos"]
+            manifestPlaceholders["git_info"] = getBranch() + "_" + getCommitID() + "_" + getUserName()
         }
     }
     compileOptions {
@@ -61,6 +76,37 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+// 获取发布时间
+fun releaseTime(): String {
+    val sdf = SimpleDateFormat("yyMMddHHmmss")
+    sdf.timeZone = TimeZone.getTimeZone("GMT+08:00")
+    return sdf.format(Date())
+}
+
+// 获取用户名
+fun getUserName(): String {
+    return Runtime.getRuntime().exec("git config user.name").inputStream.bufferedReader().use(
+        BufferedReader::readText
+    ).trim()
+}
+
+// 获取当前分支提交ID
+fun getCommitID(): String {
+    return Runtime.getRuntime().exec("git rev-parse --short HEAD").inputStream.bufferedReader()
+        .use(BufferedReader::readText).trim()
+}
+
+// 获取当前分支名
+fun getBranch(): String {
+    val process = Runtime.getRuntime().exec("git rev-parse --abbrev-ref HEAD")
+    val branch = process.inputStream.bufferedReader().use(BufferedReader::readText).trim()
+    process.waitFor()
+    if (process.exitValue() != 0) {
+        println(process.errorStream.bufferedReader().use(BufferedReader::readText))
+    }
+    return branch
 }
 
 dependencies {
