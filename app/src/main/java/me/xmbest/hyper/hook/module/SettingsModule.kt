@@ -105,7 +105,7 @@ class SettingsModule : BaseModule() {
                                 val getTitle2 = clazz.getMethod("getTitle2")
                                 val getValue = clazz.getMethod("getValue")
                                 val getKey = clazz.getMethod("getKey")
-                                val title = getTitle.invoke(arg[0])
+                                val title = (getTitle.invoke(arg[0]) as String).trim()
                                 val firstValue = getFirstValue.invoke(arg[0])
                                 val secondValue = getSecondValue.invoke(arg[0])
                                 val title2 = getTitle2.invoke(arg[0])
