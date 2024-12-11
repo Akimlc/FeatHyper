@@ -1,5 +1,7 @@
 package me.xmbest.hyper.cons
 
+import android.util.Log
+
 
 /**
  * com.android.settings常量
@@ -9,6 +11,7 @@ package me.xmbest.hyper.cons
 class SettingsCons {
     companion object {
 
+        const val TAG = "SettingsCons"
         /**
          * 编辑手机信息
          */
@@ -44,6 +47,7 @@ class SettingsCons {
          * 设置设备信息可能直接调用com.android.settings.device.BaseDeviceCardItem#setValue(CharSequence)
          */
         fun getDeviceInfoMapKey(arg1: String): String {
+            Log.d(TAG,"getDeviceInfoMapKey arg1 = $arg1")
             if (arg1.contains("+") && arg1.contains("GB")) {
                 return "运行内存"
             } else if (arg1.contains("mAh")) {
@@ -52,7 +56,7 @@ class SettingsCons {
                 return "分辨率"
             } else if (arg1.contains("″")) {
                 return "屏幕尺寸"
-            } else if (arg1.contains("平台")) {
+            } else if (arg1.contains("平台")||arg1.contains("高通")||arg1.contains("天玑")||arg1.contains("骁龙")) {
                 return "处理器"
             } else if (arg1.contains("MP")) {
                 return "摄像头"
