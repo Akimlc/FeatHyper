@@ -38,6 +38,10 @@
             android:name="xposedscope"
             android:resource="@array/xposedscope"/>
 
+        <meta-data android:name="git_info"
+            android:value="${git_info}"
+            />
+
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
