@@ -29,52 +29,5 @@ fun SystemuiLockScreen(
     navController: NavHostController,
     viewModel: SystemuiLockViewModule = viewModel()
 ) {
-    Scaffold (
-        topBar = {
-            TopAppBar(
-                title = stringResource(R.string.system_systemui)
-            )
-        }
-    ){ padding ->
-        Card(
-            modifier = Modifier
-                .padding(12.dp)
-                .padding(padding)
-        ){
-            SuperSwitch(
-                title = stringResource(R.string.system_systemui_enable_lock_show_sim),
-                checked = viewModel.enableLockShowSimName.value,
-                onCheckedChange = {
-                    viewModel.updateLockShowSimName(it)
-                }
-            )
-        }
-    }
-}
 
-@Composable
-fun SystemuiLockScreenForMiuix(
-    navController: NavHostController,
-    viewModel: SystemuiLockViewModule = viewModel()
-) {
-    Scaffold (
-        topBar = {
-            TopAppBar(
-                title = stringResource(R.string.system_systemui)
-            )
-        }
-    ){
-        Card(
-            modifier = Modifier
-                .padding(12.dp)
-        ){
-            SuperSwitch(
-                title = stringResource(R.string.system_systemui_enable_lock_show_sim),
-                checked = viewModel.enableLockShowSimName.value,
-                onCheckedChange = {
-                    viewModel.updateLockShowSimName(it)
-                }
-            )
-        }
-    }
 }
