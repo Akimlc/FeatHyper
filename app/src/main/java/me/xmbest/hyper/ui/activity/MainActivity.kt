@@ -12,7 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import me.xmbest.hyper.R
 import me.xmbest.hyper.ui.Router
-import me.xmbest.hyper.ui.theme.FeatHyperTheme
+import me.xmbest.hyper.ui.theme.AppTheme
 import me.xmbest.hyper.utils.ResUtils
 import me.xmbest.hyper.utils.SPUtils
 
@@ -22,11 +22,11 @@ class MainActivity : ComponentActivity() {
         initSp()
         enableEdgeToEdge()
         setContent {
-            FeatHyperTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            AppTheme (
+
+            ) {
                     Router(Modifier
-                        .padding(innerPadding).fillMaxWidth())
-                }
+                        .fillMaxWidth())
             }
         }
     }

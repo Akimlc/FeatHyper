@@ -9,17 +9,12 @@ import top.yukonga.miuix.kmp.theme.lightColorScheme
 
 
 @Composable
-fun FeatHyperTheme(
-    colorMode: Int = 0,
+fun AppTheme(
     content: @Composable () -> Unit
 ) {
-    val darkTheme = isSystemInDarkTheme()
     return MiuixTheme(
-        colors = when (colorMode) {
-            1 -> lightColorScheme()
-            2 -> darkColorScheme()
-            else -> if (darkTheme) darkColorScheme() else lightColorScheme()
-        },
-        content = content
-    )
+        colors = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme(),
+    ) {
+        content()
+    }
 }
