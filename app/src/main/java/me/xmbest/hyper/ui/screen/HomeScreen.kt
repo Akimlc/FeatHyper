@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -37,10 +38,8 @@ fun HomeScreen(navController: NavHostController, viewModule: HomeViewModule = vi
         LazyColumn(
             modifier = Modifier
                 .height(getWindowSize().height.dp)
-                .padding(PaddingValues)
-                .fillMaxSize()
-                .padding(top = 6.dp),
-            isEnabledOverScroll = { true },
+                .fillMaxSize(),
+            contentPadding = PaddingValues,
             topAppBarScrollBehavior = scrollBehavior
         ) {
             items(viewModule.getPackageNameList()) {
