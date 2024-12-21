@@ -1,61 +1,92 @@
 package me.xmbest.hyper.ui.screen
 
-import androidx.compose.foundation.clickable
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import me.xmbest.hyper.R
-import me.xmbest.hyper.cons.RouterCons
+import me.xmbest.hyper.cons.SettingsCons
+import me.xmbest.hyper.utils.SPUtils
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.basic.Scaffold
+import top.yukonga.miuix.kmp.basic.TextField
+import top.yukonga.miuix.kmp.basic.TopAppBar
+import top.yukonga.miuix.kmp.extra.SuperSwitch
 
 
 @Composable
 fun SettingsScreen(navController: NavHostController?) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Text(
-            text = stringResource(id = R.string.system_settings),
-            fontWeight = FontWeight.Bold,
-            fontSize = TextUnit(24f, TextUnitType.Sp),
-            modifier = Modifier.padding(start = 20.dp, top = 10.dp, bottom = 10.dp)
-        )
-        RouterCons.getSettingsList().forEach {
-            ListItem(
-                headlineContent = {},
-                supportingContent = {
-                    Text(text = it.first, fontSize = TextUnit(18f, TextUnitType.Sp))
-                },
-                trailingContent = {
-                    Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "more")
-                },
+
+    val deviceSwitch = remember { mutableStateOf(false) }
+    Scaffold(
+        topBar = {
+            TopAppBar(title = stringResource(R.string.system_settings))
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            Card(
                 modifier = Modifier
-                    .clickable {
-                        navController?.navigate(it.second)
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 6.dp)
+            ) {
+                SuperSwitch(
+                    title = "设备编辑",
+                    checked = deviceSwitch.value,
+                    onCheckedChange = {
+                        deviceSwitch.value = it
                     }
-                    .padding(start = 10.dp, end = 10.dp, bottom = 5.dp)
-            )
+                )
+                AnimatedVisibility(deviceSwitch.value) {
+                    Column {
+                        SettingsCons.deviceInfoMap.forEach { map ->
+                            var currentValue by rememberSaveable {
+                                mutableStateOf(
+                                    SPUtils.getString(
+                                        map.value,
+                                        ""
+                                    ) as String
+                                )
+                            }
+                            TextField(
+                                value = currentValue,
+                                onValueChange = {
+                                    currentValue = it
+                                    SPUtils.setString(map.value, it)
+                                },
+                                label = map.key,
+                                modifier = Modifier
+                                   .fillMaxWidth()
+                                   .padding(10.dp)
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 
 }
 
+
 @Preview
 @Composable
 fun PreviewComp() {
-    SettingsScreen(null)
+    SettingsScreen(rememberNavController())
 }
