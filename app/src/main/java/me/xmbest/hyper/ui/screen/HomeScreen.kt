@@ -1,5 +1,6 @@
 package me.xmbest.hyper.ui.screen
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,6 +39,7 @@ fun HomeScreen(navController: NavHostController, viewModule: HomeViewModule = vi
         LazyColumn(
             modifier = Modifier
                 .height(getWindowSize().height.dp)
+                .padding(top = 12.dp)
                 .fillMaxSize(),
             contentPadding = PaddingValues,
             topAppBarScrollBehavior = scrollBehavior
@@ -47,5 +49,4 @@ fun HomeScreen(navController: NavHostController, viewModule: HomeViewModule = vi
             }
         }
     }
-
 }

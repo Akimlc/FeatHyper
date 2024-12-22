@@ -10,11 +10,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import me.xmbest.hyper.R
+import me.xmbest.hyper.vm.SystemuiLockViewModule
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.Icon
 import top.yukonga.miuix.kmp.basic.IconButton
@@ -31,8 +35,9 @@ import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.utils.getWindowSize
 
 @Composable
-fun SystemuiScreen(navController: NavHostController) {
+fun SystemuiScreen(navController: NavHostController,viewModel:SystemuiLockViewModule) {
     val scrollBehavior = MiuixScrollBehavior(rememberTopAppBarState())
+    val isEnableSimSwitch = remember { mutableStateOf(viewModel.enableLockShowSimName.value) }
     Column {
         TopAppBar(
             title = stringResource(R.string.system_systemui),
@@ -73,8 +78,10 @@ fun SystemuiScreen(navController: NavHostController) {
                     ){
                         SuperSwitch(
                             title = stringResource(R.string.system_systemui_enable_lock_show_sim),
-                            checked = true,
+                            checked = viewModel.enableLockShowSimName.value,
                             onCheckedChange = {
+                                isEnableSimSwitch.value = it
+                                viewModel.updateLockShowSimName(it)
                             }
                         )
                     }

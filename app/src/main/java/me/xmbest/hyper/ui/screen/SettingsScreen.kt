@@ -3,6 +3,7 @@ package me.xmbest.hyper.ui.screen
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import me.xmbest.hyper.R
 import me.xmbest.hyper.cons.SettingsCons
 import me.xmbest.hyper.utils.SPUtils
+import me.xmbest.hyper.vm.SettingsDeviceInfoViewModule
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.Icon
 import top.yukonga.miuix.kmp.basic.IconButton
@@ -38,8 +40,8 @@ import top.yukonga.miuix.kmp.utils.getWindowSize
 
 
 @Composable
-fun SettingsScreen(navController: NavHostController?) {
-    val deviceSwitch = remember { mutableStateOf(false) }
+fun SettingsScreen(navController: NavHostController?,viewModel: SettingsDeviceInfoViewModule) {
+    val deviceSwitch = remember { mutableStateOf(viewModel.enable.value) }
     val scrollBehavior = MiuixScrollBehavior(rememberTopAppBarState())
 
     Column {
@@ -70,6 +72,7 @@ fun SettingsScreen(navController: NavHostController?) {
             topAppBarScrollBehavior = scrollBehavior
         ) {
             item {
+                Spacer(modifier = Modifier.padding(top = 12.dp))
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -77,9 +80,10 @@ fun SettingsScreen(navController: NavHostController?) {
                 ) {
                     SuperSwitch(
                         title = "设备编辑",
-                        checked = deviceSwitch.value,
+                        checked = viewModel.enable.value,
                         onCheckedChange = {
                             deviceSwitch.value = it
+                            viewModel.updateDeviceEditState(it)
                         }
                     )
                     AnimatedVisibility(deviceSwitch.value) {
@@ -118,5 +122,5 @@ fun SettingsScreen(navController: NavHostController?) {
 @Preview
 @Composable
 fun PreviewComp() {
-    SettingsScreen(rememberNavController())
+    SettingsScreen(rememberNavController(),viewModel = SettingsDeviceInfoViewModule())
 }
