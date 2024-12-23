@@ -48,6 +48,7 @@ fun SystemuiScreen(navController: NavHostController, viewModel: SystemuiLockView
     val enableLockNotificationSinkSwitch =
         remember { mutableStateOf(viewModel.enableLockNotificationSink.value) }
     val notificationSinkProgress by remember { mutableStateOf(viewModel.notificationSinkProgress) }
+    val enableLockFirstInfoSwitch =  remember { mutableStateOf(viewModel.enableLockFirstInfo.value) }
     Column {
         TopAppBar(
             title = stringResource(R.string.system_systemui),
@@ -94,7 +95,17 @@ fun SystemuiScreen(navController: NavHostController, viewModel: SystemuiLockView
                                 viewModel.updateLockShowSimName(it)
                             }
                         )
+                        //去除锁屏信息第一行
+                        SuperSwitch(
+                            title = "去除锁屏信息第一行",
+                            checked = enableLockFirstInfoSwitch.value,
+                            onCheckedChange = {
+                                enableLockFirstInfoSwitch.value = it
+                                viewModel.removeLockFirstInfo(it)
+                            }
+                        )
                     }
+
                     SmallTitle(text = "通知")
                     //锁屏通知下沉
                     Card(
@@ -147,6 +158,8 @@ fun SystemuiScreen(navController: NavHostController, viewModel: SystemuiLockView
 
                         }
                     }
+
+
                 }
             }
         }
