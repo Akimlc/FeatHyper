@@ -11,5 +11,14 @@ class SystemUiCons {
          * 锁屏显示运营商名称
          */
         const val LOCK_SHOW_SIM_NAME = "LOCK_SHOW_SIM_NAME"
+
+        /**
+         * 锁屏通知下沉
+         */
+        const val LOCK_NOTIFICATION_SINK = "LOCK_NOTIFICATION_SINK"
+        /**
+         * 锁屏通知下沉高度
+         */
+        const val LOCK_NOTIFICATION_SINK_PROGRESS = "LOCK_NOTIFICATION_SINK_PROGRESS"
     }
 }
