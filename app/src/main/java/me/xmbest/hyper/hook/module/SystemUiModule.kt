@@ -13,6 +13,7 @@ import me.xmbest.hyper.annotations.HookMethod
 import me.xmbest.hyper.annotations.HookModule
 import me.xmbest.hyper.cons.SystemUiCons
 import me.xmbest.hyper.base.BaseModule
+import me.xmbest.hyper.utils.XSPUtils
 import org.json.JSONObject
 
 /**
@@ -79,6 +80,27 @@ import org.json.JSONObject
                     }
                 }
             }
+        )
+    }
+
+    /**
+     * 锁屏通知下沉
+     */
+    @HookMethod(SystemUiCons.LOCK_NOTIFICATION_SINK, false)
+    fun lockNotificationSink(lpParam: LoadPackageParam) {
+        val notificationHeight = XSPUtils.getInt(SystemUiCons.LOCK_NOTIFICATION_SINK_PROGRESS, 1400)
+        Log.d(TAG, "lockNotificationSink: $notificationHeight")
+        XposedHelpers.findAndHookMethod(
+            "com.android.keyguard.clock.KeyguardClockContainer",
+            lpParam.classLoader,
+            "getClockBottom",
+            object : XC_MethodHook() {
+                override fun afterHookedMethod(param: MethodHookParam?) {
+                    super.afterHookedMethod(param)
+                    param?.result = notificationHeight
+                }
+            }
+
         )
     }
 

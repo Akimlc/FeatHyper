@@ -46,6 +46,8 @@ fun SystemuiScreen(navController: NavHostController, viewModel: SystemuiLockView
     val scrollBehavior = MiuixScrollBehavior(rememberTopAppBarState())
     val enableSimSwitch = remember { mutableStateOf(viewModel.enableLockShowSimName.value) }
     val enableLockFirstInfoSwitch = remember { mutableStateOf(viewModel.enableLockFirstInfo.value) }
+    val enableLockNotificationSinkSwitch = remember { mutableStateOf(viewModel.enableLockNotificationSink.value) }
+    val notificationSinkProgress by remember { mutableStateOf(viewModel.notificationSinkProgress) }
     Column {
         TopAppBar(
             title = stringResource(R.string.system_systemui),
@@ -103,6 +105,59 @@ fun SystemuiScreen(navController: NavHostController, viewModel: SystemuiLockView
                         )
 
                     }
+                    SmallTitle(text = "通知")
+                    //锁屏通知下沉
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp, vertical = 6.dp)
+                    ) {
+                        SuperSwitch(
+                            title = "锁屏通知下沉",
+                            checked = enableLockNotificationSinkSwitch.value,
+                            onCheckedChange = {
+                                enableLockNotificationSinkSwitch.value = it
+                                viewModel.enableLockNotificationSink(it)
+                            }
+                        )
+                        AnimatedVisibility(enableLockNotificationSinkSwitch.value) {
+                            Column {
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceBetween, // 让文本与数值显示左右对齐
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 15.dp)
+                                ) {
+                                    Text(
+                                        text = "通知下沉高度",
+                                        modifier = Modifier.padding(bottom = 12.dp),
+                                        fontSize = 14.sp
+                                    )
+                                    Text(
+                                        text = notificationSinkProgress.value.toString(),
+                                        modifier = Modifier.padding(bottom = 12.dp),
+                                        textAlign = TextAlign.End,
+                                        fontSize = 14.sp
+                                    )
+                                }
+                                Slider(
+                                    modifier = Modifier
+                                        .padding(horizontal = 12.dp)
+                                        .padding(bottom = 12.dp),
+                                    progress = notificationSinkProgress.value.toFloat(),
+                                    onProgressChange = { newProgress ->
+                                        notificationSinkProgress.value = newProgress.toInt()
+                                        viewModel.updateNotificationSinkProgress(newProgress.toInt())
+                                    },
+                                    minValue = 0f,
+                                    maxValue = 2000f,
+                                )
+                            }
+
+                        }
+                    }
+
                 }
             }
         }
