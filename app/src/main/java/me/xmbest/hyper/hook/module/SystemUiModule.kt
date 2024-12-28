@@ -5,12 +5,15 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import de.robv.android.xposed.XC_MethodHook
+import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
+import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 import me.xmbest.hyper.annotations.HookMethod
 import me.xmbest.hyper.annotations.HookModule
 import me.xmbest.hyper.cons.SystemUiCons
 import me.xmbest.hyper.base.BaseModule
+import org.json.JSONObject
 
 /**
  * systemui 模块
@@ -51,5 +54,33 @@ import me.xmbest.hyper.base.BaseModule
             }
         )
     }
+
+    /**
+     * 去除锁屏第一行信息
+     */
+    @HookMethod(SystemUiCons.LOCK_REMOVE_FIRST_INFO, false)
+    fun removeLockFirstInfo(lpParam: LoadPackageParam) {
+        XposedHelpers.findAndHookMethod(
+            "com.miui.clock.MiuiClockController",
+            lpParam.classLoader,
+            "getClockInfoJson",
+            Boolean::class.java,
+            object : XC_MethodHook() {
+                override fun afterHookedMethod(param: MethodHookParam?) {
+                    super.afterHookedMethod(param)
+                    val clockInfoJson = param?.result
+                    if (clockInfoJson != null) {
+                        val jsonObject = JSONObject(clockInfoJson.toString())
+                        val clockInfo = jsonObject.getJSONObject("clockInfo")
+                        //修改数据
+                        clockInfo.put("classicLine1", 0)
+                        param.result = jsonObject.toString()
+                        XposedBridge.log("RemoveFirstInfo: Hook Success")
+                    }
+                }
+            }
+        )
+    }
+
 
 }

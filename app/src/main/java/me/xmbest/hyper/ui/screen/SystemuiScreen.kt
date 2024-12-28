@@ -45,6 +45,7 @@ import top.yukonga.miuix.kmp.utils.getWindowSize
 fun SystemuiScreen(navController: NavHostController, viewModel: SystemuiLockViewModule) {
     val scrollBehavior = MiuixScrollBehavior(rememberTopAppBarState())
     val enableSimSwitch = remember { mutableStateOf(viewModel.enableLockShowSimName.value) }
+    val enableLockFirstInfoSwitch = remember { mutableStateOf(viewModel.enableLockFirstInfo.value) }
     Column {
         TopAppBar(
             title = stringResource(R.string.system_systemui),
@@ -91,7 +92,15 @@ fun SystemuiScreen(navController: NavHostController, viewModel: SystemuiLockView
                                 viewModel.updateLockShowSimName(it)
                             }
                         )
-
+                        //去除锁屏信息第一行
+                        SuperSwitch(
+                            title = "去除锁屏信息第一行",
+                            checked = enableLockFirstInfoSwitch.value,
+                            onCheckedChange = {
+                                enableLockFirstInfoSwitch.value = it
+                                viewModel.updateLockFirstInfo(it)
+                            }
+                        )
 
                     }
                 }
