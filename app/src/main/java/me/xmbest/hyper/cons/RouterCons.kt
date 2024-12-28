@@ -4,11 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import me.xmbest.hyper.R
 import me.xmbest.hyper.ui.screen.HomeScreen
-import me.xmbest.hyper.ui.screen.SettingsDeviceInfoScreen
 import me.xmbest.hyper.ui.screen.SettingsScreen
-import me.xmbest.hyper.ui.screen.SystemuiLockScreen
 import me.xmbest.hyper.ui.screen.SystemuiScreen
 import me.xmbest.hyper.utils.ResUtils
+import me.xmbest.hyper.vm.SettingsDeviceInfoViewModule
+import me.xmbest.hyper.vm.SystemuiLockViewModule
 
 data class RouterPage(val routerName: String, val comp: @Composable (() -> Unit))
 
@@ -46,10 +46,8 @@ class RouterCons {
         fun getCompList(navController: NavHostController): List<RouterPage> {
             return listOf(
                 RouterPage(HOME) { HomeScreen(navController) },
-                RouterPage(SYSTEMUI) { SystemuiScreen(navController) },
-                RouterPage(SYSTEMUI_LOCK) { SystemuiLockScreen(navController) },
-                RouterPage(SETTINGS) { SettingsScreen(navController) },
-                RouterPage(SETTINGS_DEVICE_INFO) { SettingsDeviceInfoScreen(navController) })
+                RouterPage(SYSTEMUI) { SystemuiScreen(navController, SystemuiLockViewModule()) },
+                RouterPage(SETTINGS) { SettingsScreen(navController, SettingsDeviceInfoViewModule()) },)
         }
 
         /**
