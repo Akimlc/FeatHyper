@@ -48,6 +48,8 @@ fun SystemuiScreen(navController: NavHostController, viewModel: SystemuiLockView
     val enableLockFirstInfoSwitch = remember { mutableStateOf(viewModel.enableLockFirstInfo.value) }
     val enableLockNotificationSinkSwitch = remember { mutableStateOf(viewModel.enableLockNotificationSink.value) }
     val notificationSinkProgress by remember { mutableStateOf(viewModel.notificationSinkProgress) }
+    val enableLockTimeFontSwitch = remember { mutableStateOf(viewModel.enableLockTimeFont.value) }
+
     Column {
         TopAppBar(
             title = stringResource(R.string.system_systemui),
@@ -103,6 +105,16 @@ fun SystemuiScreen(navController: NavHostController, viewModel: SystemuiLockView
                                 viewModel.updateLockFirstInfo(it)
                             }
                         )
+                        //修改锁屏时钟字体
+                        SuperSwitch(
+                            title = "修改锁屏时钟字体",
+                            checked = enableLockTimeFontSwitch.value,
+                            onCheckedChange = {
+                                enableLockTimeFontSwitch.value = it
+                                viewModel.updateLockFont(it)
+                            }
+                        )
+
 
                     }
                     SmallTitle(text = "通知")

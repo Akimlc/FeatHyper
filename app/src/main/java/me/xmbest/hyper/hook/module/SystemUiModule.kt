@@ -1,6 +1,8 @@
 package me.xmbest.hyper.hook.module
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Typeface
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -103,6 +105,67 @@ import org.json.JSONObject
 
         )
     }
+
+    /**
+     * 修改锁屏时钟字体
+     */
+    @HookMethod(SystemUiCons.LOCK_TIME_FONT, false)
+    fun lockFont(lpParam: LoadPackageParam) {
+        val MiuiTextGlassViewClass =
+            XposedHelpers.findClass("com.miui.clock.MiuiTextGlassView", lpParam.classLoader)
+        XposedHelpers.findAndHookMethod(
+            "com.miui.clock.utils.ClassicClockTimeUtils",
+            lpParam.classLoader,
+            "setClassicTimeStyle",
+            MiuiTextGlassViewClass,
+            Int::class.javaPrimitiveType,
+            Int::class.javaPrimitiveType,
+            Int::class.javaPrimitiveType,
+            Boolean::class.javaPrimitiveType,
+            Boolean::class.javaPrimitiveType,
+            object : XC_MethodHook() {
+                override fun beforeHookedMethod(param: MethodHookParam?) {
+                    super.beforeHookedMethod(param)
+                }
+
+                override fun afterHookedMethod(param: MethodHookParam?) {
+                    super.afterHookedMethod(param)
+
+                    val param3 = param?.args?.get(2)
+                    try {
+                        val miuiTextGlassView = param?.args?.get(0) as TextView
+                        when (param3) {
+                            27 -> {
+                                setCustomFont(miuiTextGlassView, "fonts/OPPODigit07.ttf")
+                            }
+
+                            28 -> {
+                                setCustomFont(miuiTextGlassView, "fonts/MochiyPopOne.otf")
+                            }
+                        }
+
+
+                    } catch (e: Exception) {
+                        Log.d("Xposed", "afterHookedMethod: Hook Failed :${e.message}")
+                    }
+
+                }
+            }
+        )
+    }
+
+
+    fun setCustomFont(view: View, fontPath: String) {
+        val textView = view as TextView
+        val context: Context = textView.context.createPackageContext(
+            "me.xmbest.hyper",
+            Context.CONTEXT_IGNORE_SECURITY
+        )
+        val customFont: Typeface = Typeface.createFromAsset(context.assets, fontPath)
+        textView.typeface = customFont
+    }
+
+
 
 
 }

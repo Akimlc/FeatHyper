@@ -27,5 +27,10 @@ class SystemUiCons {
          */
         const val LOCK_NOTIFICATION_SINK_PROGRESS = "LOCK_NOTIFICATION_SINK_PROGRESS"
 
+        /**
+         * 修改锁屏时钟字体
+         */
+        const val LOCK_TIME_FONT = "LOCK_TIME_FONT"
+
     }
 }
