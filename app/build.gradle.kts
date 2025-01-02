@@ -132,4 +132,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     //MiuiX
     implementation(libs.miuix)
+
+    //EzxHelper
+    implementation(libs.ezxhelper)
+    // HookTool
+    implementation(libs.hooktool)
 }

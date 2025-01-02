@@ -1,5 +1,7 @@
 [versions]
 agp = "8.6.0"
+ezxhelper = "2.2.0"
+hooktool = "v.1.1.4"
 kotlin = "2.0.0"
 coreKtx = "1.10.1"
 junit = "4.13.2"
@@ -14,6 +16,8 @@ nav_version = "2.8.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+ezxhelper = { module = "com.github.kyuubiran:EzXHelper", version.ref = "ezxhelper" }
+hooktool = { module = "com.github.HChenX:HookTool", version.ref = "hooktool" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
