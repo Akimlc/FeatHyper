@@ -1,5 +1,6 @@
 package me.xmbest.hyper.hook.module
 
+import android.R.attr.classLoader
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
@@ -13,10 +14,11 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
 import me.xmbest.hyper.annotations.HookMethod
 import me.xmbest.hyper.annotations.HookModule
-import me.xmbest.hyper.cons.SystemUiCons
 import me.xmbest.hyper.base.BaseModule
+import me.xmbest.hyper.cons.SystemUiCons
 import me.xmbest.hyper.utils.XSPUtils
 import org.json.JSONObject
+
 
 /**
  * systemui 模块
@@ -52,6 +54,7 @@ import org.json.JSONObject
                             tv.text = tv.text.split("|")[0]
                         }
                         tv.visibility = View.VISIBLE
+                        XposedBridge.log("显示锁屏运营商名称成功")
                     }
                 }
             }
@@ -78,7 +81,7 @@ import org.json.JSONObject
                         //修改数据
                         clockInfo.put("classicLine1", 0)
                         param.result = jsonObject.toString()
-                        XposedBridge.log("RemoveFirstInfo: Hook Success")
+                        XposedBridge.log("去除锁屏第一行信息成功")
                     }
                 }
             }
@@ -100,6 +103,7 @@ import org.json.JSONObject
                 override fun afterHookedMethod(param: MethodHookParam?) {
                     super.afterHookedMethod(param)
                     param?.result = notificationHeight
+                    XposedBridge.log("锁屏通知下沉修改成功")
                 }
             }
 
@@ -137,10 +141,12 @@ import org.json.JSONObject
                         when (param3) {
                             27 -> {
                                 setCustomFont(miuiTextGlassView, "fonts/OPPODigit07.ttf")
+                                XposedBridge.log("修改成功")
                             }
 
                             28 -> {
                                 setCustomFont(miuiTextGlassView, "fonts/MochiyPopOne.otf")
+                                XposedBridge.log("修改成功")
                             }
                         }
 
